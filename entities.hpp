@@ -22,10 +22,26 @@ public:
   Entity(std::string n, struct entity_sheet init_sheet) :
     name(n), sheet(init_sheet) {};
 
+  // Ataque normal, na base da porrada
   //virtual int attack() = 0;
-  //virtual defend() = 0;
+  
+  Entity* defend(int damage){
+
+    sheet.hitpoints = (damage > sheet.hitpoints) ? 0 : sheet.hitpoints -= damage; 
+
+    // É um jeito meio estranho, mas ela:
+    // * Retorna nullptr se ninguém morreu
+    // * Retorna Entity* da entidade que morreu
+    
+    (sheet.hitpoints > 0) ? return nullptr; return this;
+    
+  };
+
+  // Pode ser mágico, pode ser um super ataque, use a criatividade :D
   //virtual ability() = 0;
 
+  int get_speed() {return sheet.speed;};
+  
   friend std::ostream& operator<<(std::ostream &os, const Entity &e){
 
     os << "+-----------+" << std::endl;
