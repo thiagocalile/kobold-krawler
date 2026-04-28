@@ -22,6 +22,10 @@ public:
   Entity(std::string n, struct entity_sheet init_sheet) :
     name(n), sheet(init_sheet) {};
 
+  //virtual int attack() = 0;
+  //virtual defend() = 0;
+  //virtual ability() = 0;
+
   friend std::ostream& operator<<(std::ostream &os, const Entity &e){
 
     os << "+-----------+" << std::endl;
