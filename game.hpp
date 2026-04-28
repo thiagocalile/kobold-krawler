@@ -8,6 +8,8 @@ enum game_state {
   START,
   COMBAT,
   REST,
+  GOOD_ENDING,
+  BAD_ENDING,
 
 };
 
@@ -24,8 +26,17 @@ public:
     current_state = COMBAT;
     Combat* combat = new Combat(player, dungeon[current_room]);
   };
+  
   void end_combat(){
-    current_state = REST;
+    if(player.get_current_hp()){
+      if(current_room == dungeon.size() - 1){
+	current_state = GOOD_ENDING;
+      } else {
+	current_state = REST;
+      }
+    } else {
+      current_state = BAD_ENDING
+    };
   };
 };
 

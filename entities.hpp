@@ -17,10 +17,13 @@ class Entity {
 private:
   struct entity_sheet sheet;
   std::string name;
+  int current_hp {};
 
 public:
   Entity(std::string n, struct entity_sheet init_sheet) :
-    name(n), sheet(init_sheet) {};
+    name(n), sheet(init_sheet) {
+    current_hp = sheet.hitpoints;
+      };
 
   // Ataque normal, na base da porrada
   //virtual int attack() = 0;
@@ -41,6 +44,8 @@ public:
   //virtual ability() = 0;
 
   int get_speed() {return sheet.speed;};
+
+  int get_current_hp() {return current_hp;};
   
   friend std::ostream& operator<<(std::ostream &os, const Entity &e){
 
