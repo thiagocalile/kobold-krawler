@@ -160,7 +160,7 @@ public:
     
   };
 
-  void level_up(){
+  virtual void level_up(){
     level++;
     sheet.hitpoints++;
     sheet.strength++;    
@@ -273,12 +273,179 @@ public:
 
 };
 
-class Guerreiro : public Player {};
+class Guerreiro : public Player {
 
-class Atirador : public Player {};
+public:
+  Guerreiro(std::string n) :
+    Player(n, {}) {
 
-class Mago : public Player {};
+    sheet.hitpoints = 12;
+    sheet.strength = 8;
+    sheet.defense = 3;
+    sheet.speed = 5;
 
-class Ladino : public Player {};
+    std::uniform_int_distribution<> distribution(-1,1);
+
+    sheet.hitpoints += distribution(gen);
+    sheet.strength += distribution(gen);
+    sheet.defense += distribution(gen);
+    sheet.speed += distribution(gen);;
+
+    current_hp = sheet.hitpoints;
+
+  };
+
+  int ability(){
+
+    std::scout << std::format("{} deu uma estocada com sua espada.", name) << std::endl;
+
+    std::uniform_int_distribution<> distribution(level -1, level + 2);
+
+    return strength + distribution(gen);
+    
+  };
+
+  void level_up() override {
+    Player::level_up();
+    sheet.hitpoints++;
+    sheet.defense++;
+  };
+
+};
+
+class Atirador : public Player {
+
+public:
+  Atirador(std::string n) :
+    Player(n, {}) {
+
+    sheet.hitpoints = 12;
+    sheet.strength = 2;
+    sheet.defense = 2;
+    sheet.speed = 10;
+
+    std::uniform_int_distribution<> distribution(-1,1);
+
+    sheet.hitpoints += distribution(gen);
+    sheet.strength += distribution(gen);
+    sheet.defense += distribution(gen);
+    sheet.speed += distribution(gen);;
+
+    current_hp = sheet.hitpoints;
+
+  };
+
+  int ability(){
+
+    int shots = std::uniform_int_distribution<> distribution(level + 1, level + 2);
+
+    std::scout <<
+      std::format("{} atirou com sua funda {} vezes.", name, shots)
+	       << std::endl;
+
+    return (strength + speed) * distribution(gen) / 3;
+    
+  };
+
+  void level_up() override {
+    Player::level_up();
+    sheet.speed++;
+  };
+
+};
+
+class Mago : public Player {
+
+public:
+  Mago(std::string n) :
+    Player(n, {}) {
+
+    sheet.hitpoints = 12;
+    sheet.strength = 4;
+    sheet.defense = 1;
+    sheet.speed = 7;
+
+    std::uniform_int_distribution<> distribution(-1,1);
+
+    sheet.hitpoints += distribution(gen);
+    sheet.strength += distribution(gen);
+    sheet.defense += distribution(gen);
+    sheet.speed += distribution(gen);;
+
+    current_hp = sheet.hitpoints;
+
+  };
+
+  int ability(){
+
+    std::uniform_int_distribution<> distribution(level + 1, level + 2);
+
+    int magical_damage = (level * 2 + speed) * distribution(gen) / 2;
+    
+    std::scout <<
+      std::format("{} entoa vários encantamentos \
+                   e causa {} de dano.", name, magical_damage)
+	       << std::endl;
+
+    return magical_damage;
+    
+  };
+
+  void level_up() override {
+    Player::level_up();
+    sheet.speed++;
+  };
+
+};
+
+class Ladino : public Player {
+
+public:
+  Ladino(std::string n) :
+    Player(n, {}) {
+
+    sheet.hitpoints = 8;
+    sheet.strength = 4;
+    sheet.defense = 0;
+    sheet.speed = 15;
+
+    std::uniform_int_distribution<> distribution(-1,1);
+
+    sheet.hitpoints += distribution(gen);
+    sheet.strength += distribution(gen);
+    sheet.defense += distribution(gen);
+    sheet.speed += distribution(gen);;
+
+    current_hp = sheet.hitpoints;
+
+  };
+
+  int ability(){
+
+    std::uniform_int_distribution<> distribution( (level / 2) + 1, level + 2);
+
+    int stabs = (level + (speed / 2) ) * distribution(gen);
+
+    std::uniform_int_distribution<> distribution(0, strength / 2);
+    
+    for(int damage {}; stabs > 0; stabs--){
+      dano =+ distribution(gen);
+    }
+    
+    std::scout <<
+      std::format("{} esfaqueou {} vezes, \
+                   totalizando {} de dano.", name, stabs, damage)
+	       << std::endl;
+
+    return damage;
+    
+  };
+
+  void level_up() override {
+    Player::level_up();
+    sheet.speed++;
+  };
+
+};
 
 #endif
