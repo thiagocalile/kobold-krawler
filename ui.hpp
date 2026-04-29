@@ -79,7 +79,7 @@ public:
 
     std::cout << "Digite o tamanho em salas: ";
 
-    do{
+    do{ 
       std::cin >> dungeon_size;
       if(dungeon_size < 1) std::cout << "Tamanho mínimo é 1!" << std::endl;
     } while(dungeon_size < 1);
