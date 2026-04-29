@@ -38,6 +38,8 @@ public:
       current_state = BAD_ENDING
     };
   };
+
+  game_state get_current_state(){return current_state};
 };
 
 #endif
