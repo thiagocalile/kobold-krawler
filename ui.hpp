@@ -23,7 +23,7 @@ struct enemy_ability_pair {
   std::string enemy_name;
   std::string ability_name;
 
-}
+};
 
   void harden_monsters(std::vector<Enemy*> dungeon){
 
@@ -31,7 +31,7 @@ struct enemy_ability_pair {
     enemy->harden();
   }
   
-}
+};
 
 class UI {
 
@@ -51,7 +51,7 @@ private:
     
     if(enemy_type == 0){
 
-      std::vector<enemy_ability_pair> vemin_names = {
+      std::vector<enemy_ability_pair> vermin_names = {
 	{"Os ratos amaldiçoados", "mordem!"},
 	{"As galinhas atômicas", "bicam sem parar!"},
 	{"O enxame de mosquitos egípicios", "picam incessantemente!"},
@@ -69,9 +69,11 @@ private:
 	{"Os tomates assassinos", "tentam koboldicídio!"},
       };
 
-      std::uniform_int_distribution<> distrib(0, vemin_names.size() - 1);
+      std::uniform_int_distribution<> distrib(0, vermin_names.size() - 1);
+
+      enemy_ability_pair enemy = vermin_names[distrib(gen)];
       
-      return new Vermin(name, ability);
+      return new Vermin(enemy.enemy_name, enemy.ability_name);
       
     } else if (enemy_type == 1){
 
@@ -95,7 +97,9 @@ private:
 
       std::uniform_int_distribution<> distrib(0, regular_names.size() - 1);
       
-      return new Regular(name, ability);
+      enemy_ability_pair enemy = regular_names[distrib(gen)];
+      
+      return new Regular(enemy.enemy_name, enemy.ability_name);
       
     } else {
 
@@ -107,9 +111,11 @@ private:
 	{"O dragão de plutônio", "cospe radiação!"},
       };
 
-      std::uniform_int_distribution<> distrib(0, vemin_names.size() - 1);
+      std::uniform_int_distribution<> distrib(0, boss_names.size() - 1);
+
+      enemy_ability_pair enemy = boss_names[distrib(gen)];
       
-      return new Boss(name, ability);
+      return new Boss(enemy.enemy_name, enemy.ability_name);
 
     }
     
@@ -147,10 +153,10 @@ public:
       if(classe < 1 || classe > 4) std::cout << "Escolha um dos números!" << std::endl;
     };
 
+    std::string nome;
+
     do{
       std::cout << "Dê um nome para a sua criatura: " << std::endl;
-
-      std::string nome;
 
       std::cin >> nome;
 
@@ -158,7 +164,7 @@ public:
 	std::cout << "Limite o nome para até 20 characteres!" << std::endl;
       }
 
-    } while(nome.size() <= 20);
+    } while(nome.size() > 20);
     
     switch(static_cast<classes>(classe)){
 
@@ -222,11 +228,11 @@ public:
 
 	    std::cin >> prompt;
 
-	    if(prompt > 2 || prompt < 1) {
+	    if(prompt > 1 || prompt < 0) {
 	          std::cout << "Escolha uma das opções!" << std::endl;
 	    }
 	
-	} while(prompt > 2 || prompt < 0);
+	} while(prompt > 1 || prompt < 0);
 
     } while(//Meio confuso, mas veja combat.hpp, Combat->run_turn();
 	     current_combat->run_turn(
