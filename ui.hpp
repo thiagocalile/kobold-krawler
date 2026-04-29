@@ -21,12 +21,13 @@ enum classes {
 class UI {
 
 private:
-  Game* game = new Game;
+  Game* game;
   bool is_running = true;
   Player* p;
   int dungeon_size = 5;
   std::vector<Enemy*> dungeon;
   Combat* current_combat;
+  bool is_initializing = true;
   
 public:
   UI() {
@@ -109,6 +110,8 @@ public:
     std::cout << "A boca da caverna te aguarda..." << std::endl;
 
     current_combat = game->start_combat();
+
+    is_initializing = false;
     
   };
   
@@ -226,13 +229,11 @@ public:
 
   bool run() {
 
+    show_start();
+    
     for(;;){
 
       switch(game->get_current_state()){
-
-      case START:
-	show_start();
-	break;
 
       case COMBAT:
 	show_combat();

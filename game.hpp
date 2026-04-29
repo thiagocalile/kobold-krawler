@@ -6,7 +6,6 @@
 
 enum game_state {
 
-  START,
   COMBAT,
   REST,
   GOOD_ENDING,
