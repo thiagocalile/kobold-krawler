@@ -135,6 +135,8 @@ public:
     int option {};
     int heal_amount {};
 
+    p->level_up();
+
     std::cout <<
       std::format("{} triunfou em combate!", p->get_name())
 	      << std::endl;

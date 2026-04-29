@@ -1,13 +1,24 @@
 #include <iostream>
 #include <string>
 #include <format>
+#include <random>
+
+#include "combat.hpp"
 
 #ifndef ENTITIES_HPP
 #define ENTITIES_HPP
 
+/* Vamos fazer ao estilo D&D: 10 é médio
+ *
+ *
+ *
+ *
+ */
+
 struct entity_sheet {
 
   int hitpoints{};
+  int strength {};
   int defense {};
   int speed {};
   
@@ -24,25 +35,58 @@ public:
   Entity(std::string n, struct entity_sheet init_sheet) :
     name(n), sheet(init_sheet) {
     current_hp = sheet.hitpoints;
+    // https://en.cppreference.com/cpp/numeric/random/uniform_int_distribution
+    std::random_device random_device;
+    std::mt19937 gen(random_device());
       };
 
   // Ataque normal, na base da porrada
-  //virtual int attack() = 0;
+  int attack(){
+
+    int damage {};
+    std::uniform_int_distribution<> distribution(0, strength + 2);
+
+    if(damage == 0){
+      std::cout <<
+	std::format("{} errou o ataque!", name)
+		<< std::endl;
+    } else if(damage > 0 && damage <= strength) {
+      std::cout <<
+	std::format("{} atacou!", name)
+		<< std::endl;
+    } else {
+      std::cout << std::format("{} fez um ataque crítico!", name) << std::endl;
+    }
+
+    return damage;
+  };
   
   Entity* defend(int damage){
 
-    sheet.hitpoints = (damage > sheet.hitpoints) ? 0 : sheet.hitpoints -= damage;
+    int defended_damage = damage - sheet.defense;
+
+    if(defended_damage){
+    std::cout <<
+      std::format("{} defendeu {} do dano infligido!", name, sheet.defense)
+	      << std::endl;
+    } else {
+      std::cout <<
+	std::format("{} defendeu todo o dano infligido!", name)
+		<< std::endl;
+    };
+    
+    current_hp = (defended_damage > current_hp) ? 0 : current_hp -= defended_damage;
 
     // É um jeito meio estranho, mas ela:
     // * Retorna nullptr se ninguém morreu
     // * Retorna Entity* da entidade que morreu
     
-    return (sheet.hitpoints > 0) ? nullptr : this;
+    return (current_hp > 0) ? nullptr : this;
     
   };
 
   // Pode ser mágico, pode ser um super ataque, use a criatividade :D
-  //virtual ability() = 0;
+  virtual ability() = 0;
 
   int get_speed() {return sheet.speed;};
 
@@ -67,6 +111,15 @@ public:
 class Enemy : public Entity {
 
   using Entity::Entity;
+
+public:
+  action_type choose_action(){
+
+    std::uniform_int_distribution<> distribution(0,1);
+
+    if(distribution(gen)) {return ATTACK} else {USE_ABILITY};
+
+  }
   
 };
 
@@ -74,8 +127,47 @@ class Player : public Entity {
 
   using Entity::Entity;
 
+  int level {};
+
 public:
-  bool heal() {};
+  bool heal() {
+
+    int healing_amount {};
+
+    std::uniform_int_distribution<> distribution(2, sheet.hitpoints);
+
+    if(current_hp == sheet.hitpoints){
+      std::cout <<
+	std::format("Nada a curar. HP: {}, que é o máximo de {}", current_hp, name)
+		<< std::endl;
+      return false;
+    } else {
+
+      healing_amount = distribution(gen);
+
+      if(current_hp + healing_amount > sheet.hitpoints){
+	healing_amount -= sheet.hitpoints;
+      };
+
+      current_hp += healing_amount;
+
+      std::cout <<
+	std::format("{} curou {} de {} HP máximo", name, healing_amount, sheet.hitpoints)
+		<< std::endl;
+      
+      return true;
+    }
+    
+  };
+
+  void level_up(){
+    level++;
+    sheet {
+      .hitpoints++;
+      .strength++;
+    };
+    
+  };
 
 };
 
