@@ -16,7 +16,7 @@ enum game_state {
 class Game {
 
 private:
-  game_state current_state = START;
+  game_state current_state = COMBAT;
   Player* player;
   std::vector<Enemy*> dungeon;
   int current_room {};
@@ -48,6 +48,13 @@ public:
   game_state get_current_state(){return current_state;};
   Player* get_player(){return player;};
   Enemy* get_current_enemy(){return dungeon[current_room];};
+
+};
+
+  void end_rest(){
+
+    current_room++;
+    current_state = COMBAT;
 
 };
 

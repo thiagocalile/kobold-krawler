@@ -235,7 +235,7 @@ public:
 	} while(prompt > 1 || prompt < 0);
 
     } while(//Meio confuso, mas veja combat.hpp, Combat->run_turn();
-	     current_combat->run_turn(
+	     !current_combat->run_turn(
 	       p, //player
 	       static_cast<action_type>(prompt),
 	       game->get_current_enemy()
@@ -288,6 +288,8 @@ public:
       };
       
     } while(option != 2);
+
+    game->end_rest();
     
   };
   

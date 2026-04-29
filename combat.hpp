@@ -23,10 +23,6 @@ public:
       if(second->defend(first->attack())) should_stop = true;
       break;
       
-    case HEAL:
-      first->heal();
-      break;
-      
     case USE_ABILITY:
       if(second->defend(first->ability())) should_stop = true;
       break;
