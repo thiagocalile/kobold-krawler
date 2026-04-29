@@ -86,7 +86,7 @@ public:
   };
 
   // Pode ser mágico, pode ser um super ataque, use a criatividade :D
-  virtual ability() = 0;
+  virtual int ability() = 0;
 
   int get_speed() {return sheet.speed;};
 
@@ -117,7 +117,7 @@ public:
 
     std::uniform_int_distribution<> distribution(0,1);
 
-    if(distribution(gen)) {return ATTACK} else {USE_ABILITY};
+    if(distribution(gen)) {return ATTACK;} else {return USE_ABILITY;};
 
   }
   
@@ -162,11 +162,8 @@ public:
 
   void level_up(){
     level++;
-    sheet {
-      .hitpoints++;
-      .strength++;
-    };
-    
+    sheet.hitpoints++;
+    sheet.strength++;    
   };
 
 };
@@ -185,7 +182,7 @@ public:
     sheet.defense = 2;
     sheet.speed = 2;
 
-    uniform_int_distribution<> distribution(-2, 2);
+    std::uniform_int_distribution<> distribution(-2, 2);
     sheet.hitpoints += distribution(gen);
     sheet.strength += distribution(gen);
     sheet.defense += distribution(gen);
@@ -198,7 +195,7 @@ public:
 
     std::cout << std::format("{} {}", name, ability_name) << std::endl;
 
-    uniform_int_distribution<> distribution(2, 4);
+    std::uniform_int_distribution<> distribution(2, 4);
     
     return distribution(gen);
     
@@ -215,12 +212,12 @@ public:
   Regular(std::string n, std::string a) :
     Enemy(n, {}), ability_name(a) {
 
-    sheet.hitpoint = 12;
+    sheet.hitpoints = 12;
     sheet.strength = 8;
     sheet.defense = 4;
     sheet.speed = 10;
 
-    uniform_int_distribution<> distribution(-1, 2);
+    std::uniform_int_distribution<> distribution(-1, 2);
     sheet.hitpoints += distribution(gen);
     sheet.strength += distribution(gen);
     sheet.defense += distribution(gen);
@@ -233,7 +230,7 @@ public:
 
     std::cout << std::format("{} {}", name, ability_name) << std::endl;
 
-    uniform_int_distribution<> distribution(2, 5);
+    std::uniform_int_distribution<> distribution(2, 5);
     
     return distribution(gen);
     
@@ -255,7 +252,7 @@ public:
     sheet.defense = 6;
     sheet.speed = 12;
     
-    uniform_int_distribution<> distribution(-2, 7);
+    std::uniform_int_distribution<> distribution(-2, 7);
     sheet.hitpoints += distribution(gen);
     sheet.strength += distribution(gen);
     sheet.defense += distribution(gen);
@@ -268,7 +265,7 @@ public:
 
     std::cout << std::format("{} {}", name, ability_name) << std::endl;
 
-    uniform_int_distribution<> distribution(5, 12);
+    std::uniform_int_distribution<> distribution(5, 12);
     
     return distribution(gen);
     
