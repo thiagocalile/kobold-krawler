@@ -21,7 +21,7 @@ enum classes {
 class UI {
 
 private:
-  Game* game;
+  Game* game = new Game;
   bool is_running = true;
   Player* p;
   int dungeon_size = 5;
@@ -55,23 +55,36 @@ public:
       std::cin >> classe;
       if(classe < 1 || classe > 4) std::cout << "Escolha um dos números!" << std::endl;
     };
+
+    do{
+      std::cout << "Dê um nome para a sua criatura: " << std::endl;
+
+      std::string nome;
+
+      std::cin >> nome;
+
+      if(nome.size() > 20){
+	std::cout << "Limite o nome para até 20 characteres!" << std::endl;
+      }
+
+    } while(nome.size() <= 20);
     
     switch(static_cast<classes>(classe)){
 
     case GUERREIRO:
-      p = new Guerreiro;
+      p = new Guerreiro(nome);
       break;
 
     case ATIRADOR:
-      p = new Atirador;
+      p = new Atirador(nome);
       break;
       
     case MAGO:
-      p = new Mago;
+      p = new Mago(nome);
       break;
       
     case LADINO:
-      p = new Ladino;
+      p = new Ladino(nome);
       break;
       
     };

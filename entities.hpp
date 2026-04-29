@@ -3,17 +3,18 @@
 #include <format>
 #include <random>
 
-#include "combat.hpp"
-
 #ifndef ENTITIES_HPP
 #define ENTITIES_HPP
 
-/* Vamos fazer ao estilo D&D: 10 é médio
- *
- *
- *
- *
- */
+// Vamos fazer ao estilo D&D: 10 é médio
+
+enum action_type {
+
+  ATTACK,
+  HEAL,
+  USE_ABILITY,
+
+};
 
 struct entity_sheet {
 
@@ -297,7 +298,7 @@ public:
 
   int ability(){
 
-    std::scout << std::format("{} deu uma estocada com sua espada.", name) << std::endl;
+    std::cout << std::format("{} deu uma estocada com sua espada.", name) << std::endl;
 
     std::uniform_int_distribution<> distribution(level -1, level + 2);
 
@@ -337,9 +338,11 @@ public:
 
   int ability(){
 
-    int shots = std::uniform_int_distribution<> distribution(level + 1, level + 2);
+    std::uniform_int_distribution<> distribution(level + 1, level + 2);
 
-    std::scout <<
+    int shots = distribution(gen);
+    
+    std::cout <<
       std::format("{} atirou com sua funda {} vezes.", name, shots)
 	       << std::endl;
 
@@ -382,7 +385,7 @@ public:
 
     int magical_damage = (level * 2 + speed) * distribution(gen) / 2;
     
-    std::scout <<
+    std::cout <<
       std::format("{} entoa vários encantamentos \
                    e causa {} de dano.", name, magical_damage)
 	       << std::endl;
@@ -429,10 +432,10 @@ public:
     std::uniform_int_distribution<> distribution(0, strength / 2);
     
     for(int damage {}; stabs > 0; stabs--){
-      dano =+ distribution(gen);
+      damage += distribution(gen);
     }
     
-    std::scout <<
+    std::cout <<
       std::format("{} esfaqueou {} vezes, \
                    totalizando {} de dano.", name, stabs, damage)
 	       << std::endl;

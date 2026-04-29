@@ -3,14 +3,6 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
-enum action_type {
-
-  ATTACK,
-  HEAL,
-  USE_ABILITY,
-
-};
-
 class Combat {
 
 private:
