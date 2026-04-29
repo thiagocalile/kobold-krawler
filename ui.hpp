@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <format>
 
 #include "game.hpp"
 #include "entities.hpp"
@@ -119,12 +120,11 @@ public:
 
     } while(//Meio confuso, mas veja combat.hpp, Combat->run_turn();
 	     current_combat->run_turn(
-	       player,
+	       p, //player
 	       static_cast<action_type>(prompt),
-	       game->get_current_enemy(),
-	       game->get_current_enemy()->choose_action()
-	     )
-	  )
+	       game->get_current_enemy()
+	       )
+	    );
       
     game->end_combat();
     
@@ -136,12 +136,12 @@ public:
     int heal_amount {};
 
     std::cout <<
-      std::format("{} triunfou em combate!", player->get_name())
+      std::format("{} triunfou em combate!", p->get_name())
 	      << std::endl;
     std::cout <<
-      (player->get_current_hp() > 1) ?
-      std::format("Lhe sobraram {} pontos de vida.", player->get_current_hp()) :
-      std::format("Lhe sobrou apenas um mísero ponto de vida.")
+      ((p->get_current_hp() > 1) ?
+      std::format("Lhe sobraram {} pontos de vida.", p->get_current_hp()) :
+       std::format("Lhe sobrou apenas um mísero ponto de vida."))
 	      << std::endl;
     do{
       
@@ -150,13 +150,13 @@ public:
 	        << std::endl;
       std::cout <<
         std::format("2) Prosseguir para a próxima \
-                     sala como {} está agora.", player->get_name())
+                     sala como {} está agora.", p->get_name())
 	        << std::endl;
 
       std::cin >> option;
       
       if(option == 1){
-	if(!player->heal()){
+	if(!p->heal()){
 	  std::cout << "Nenhum monstro ficou mais forte." << std::endl;
 	} else {
 	  harden_monsters(dungeon);
@@ -178,10 +178,10 @@ public:
       std::cout <<
 	std::format(
 		    "Parabéns, {} sobrevieu a todas as criaturas, \
-                     além do monstro horrível final", player->get_name())
+                     além do monstro horrível final", p->get_name())
 		         << std::endl;
       std::cout <<
-	std::format("Agora, {} volta para casa, para seu dragão.", player->get_name())
+	std::format("Agora, {} volta para casa, para seu dragão.", p->get_name())
 		<< std::endl;
       std::cout << "Suas mãos com os espólios da vitória!" << std::endl;
 
@@ -191,17 +191,17 @@ public:
     } else {
 
       std::cout <<
-	std::format("Infelizmente, {} pereceu...", player->get_name())
+	std::format("Infelizmente, {} pereceu...", p->get_name())
 		<< std::endl;
 
       std::cout <<
-	std::format("Ninguém lembrará de {} além de você...", player->get_name())
+	std::format("Ninguém lembrará de {} além de você...", p->get_name())
 		<< std::endl;
 
       std::cout <<
 	std::format(
 		    "Muitos outros kobolds virão depois \
-                    de {} e também serão esquecidos...", player->get_name())
+                    de {} e também serão esquecidos...", p->get_name())
 		<<std::endl;
       
       std::cout << "Mas tal é a vida sob um tirano..." << std::endl;
@@ -239,6 +239,6 @@ public:
     };
 
   }
-}
+};
 
 #endif

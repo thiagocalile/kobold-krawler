@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <format>
 
 #ifndef ENTITIES_HPP
 #define ENTITIES_HPP
@@ -30,13 +31,13 @@ public:
   
   Entity* defend(int damage){
 
-    sheet.hitpoints = (damage > sheet.hitpoints) ? 0 : sheet.hitpoints -= damage; 
+    sheet.hitpoints = (damage > sheet.hitpoints) ? 0 : sheet.hitpoints -= damage;
 
     // É um jeito meio estranho, mas ela:
     // * Retorna nullptr se ninguém morreu
     // * Retorna Entity* da entidade que morreu
     
-    return (sheet.hitpoints > 0) ? nullptr; this;
+    return (sheet.hitpoints > 0) ? nullptr : this;
     
   };
 

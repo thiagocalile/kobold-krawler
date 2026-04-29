@@ -9,7 +9,7 @@ enum action_type {
   HEAL,
   USE_ABILITY,
 
-}
+};
 
 class Combat {
 
@@ -46,7 +46,7 @@ public:
   
   bool run_turn(Player* p, action_type p_a, Enemy* e){
 
-    action_type e_a = e->run_action();
+    action_type e_a = e->choose_action();
     
     // "Borbulha" se deveria parar ou não
     if(p->get_speed() > e->get_speed()){

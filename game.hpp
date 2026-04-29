@@ -1,4 +1,5 @@
 #include <vector>
+#include <format>
 
 #ifndef GAME_H
 #define GAME_H
@@ -34,7 +35,7 @@ public:
   };
   
   void end_combat(){
-    if(player.get_current_hp()){
+    if(player->get_current_hp()){
       if(current_room == dungeon.size() - 1){
 	current_state = GOOD_ENDING;
       } else {
