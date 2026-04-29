@@ -22,9 +22,15 @@ private:
   int current_room {};
 
 public:
-  void start_combat(){
+
+  Game(Player* p, std::vector<Enemy*> d) : dungeon(d), player(p) {};
+  
+  Combat* start_combat(){
     current_state = COMBAT;
     Combat* combat = new Combat(player, dungeon[current_room]);
+    std::cout << std::format("{} está contra {}.",
+			     player.name, dungeon[current_room]) << std::endl;
+    return combat;
   };
   
   void end_combat(){
@@ -40,6 +46,8 @@ public:
   };
 
   game_state get_current_state(){return current_state};
+  Player* get_player(){return player};
+  Enemy* get_current_enemy(){return dungeon[current_room]};
 };
 
 #endif

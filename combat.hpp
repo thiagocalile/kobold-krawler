@@ -44,7 +44,10 @@ public:
 
   };
   
-  bool run_turn(Player* p, action_type p_a, Enemy* e, action_type e_a){
+  bool run_turn(Player* p, action_type p_a, Enemy* e){
+
+    action_type e_a = e.run_action();
+    
     // "Borbulha" se deveria parar ou não
     if(p.get_speed() > e.get_speed()){
       return run_action(p, p_a, e, e_a);

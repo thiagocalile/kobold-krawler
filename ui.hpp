@@ -25,6 +25,7 @@ private:
   Player* p;
   int dungeon_size = 5;
   std::vector<Enemy*> dungeon;
+  Combat* current_combat;
   
 public:
   UI() : {
@@ -78,11 +79,39 @@ public:
       std::cin >> dungeon_size;
     } while(dungeon_size < 1; std::cout << "Tamanho mínimo é 1!" << std::endl;);
 
-    game
+    for(; dungeon_size >= 0; dungeon_size--){
+      dungeon.back_push((generate_enemy()));
+    };
+
+    dungeon.back_push(generate_boss());
+    
+    game = new Game(p, dungeon);
+
+    std::cout << "A boca da caverna te aguarda..." << std::endl;
+
+    current_combat = game.start_combat();
     
   };
   
   void show_combat(){
+
+    int prompt {};
+    
+    do {
+       std::cout << "Qual ação você quer tomar?" << std::endl;
+       std::cout << "0) Atacar" << std::endl;
+       std::cout << "1) Usar poção" << std::endl;
+       std::cout << "2) Usar habilidade" << std::endl;
+
+       std::cin >> prompt;
+
+    } while(prompt > 2 || prompt < 0;
+	    std::cout << "Escolha uma das opções!" << std::endl;);
+
+    current_combat.run_turn(player, static_cast<action_type>(cout),
+			    game.get_current_enemy(),
+			    game.get_current_enemy().choose_action());
+    
   };
   
   void show_rest(){
