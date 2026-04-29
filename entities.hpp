@@ -32,7 +32,7 @@ protected:
   int current_hp {};
   // https://en.cppreference.com/cpp/numeric/random/uniform_int_distribution
   std::random_device random_device;
-  std::mt19937 gen(random_device());
+  std::mt19937 gen{random_device()};
     
 public:
   Entity(std::string n, struct entity_sheet init_sheet) :
