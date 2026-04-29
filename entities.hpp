@@ -36,7 +36,7 @@ public:
     // * Retorna nullptr se ninguém morreu
     // * Retorna Entity* da entidade que morreu
     
-    (sheet.hitpoints > 0) ? return nullptr; return this;
+    return (sheet.hitpoints > 0) ? nullptr; this;
     
   };
 
@@ -46,6 +46,8 @@ public:
   int get_speed() {return sheet.speed;};
 
   int get_current_hp() {return current_hp;};
+
+  std::string get_name() {return name;};
   
   friend std::ostream& operator<<(std::ostream &os, const Entity &e){
 
@@ -70,6 +72,9 @@ class Enemy : public Entity {
 class Player : public Entity {
 
   using Entity::Entity;
+
+public:
+  bool heal() {};
 
 };
 

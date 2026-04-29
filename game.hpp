@@ -29,7 +29,7 @@ public:
     current_state = COMBAT;
     Combat* combat = new Combat(player, dungeon[current_room]);
     std::cout << std::format("{} está contra {}.",
-			     player.name, dungeon[current_room]) << std::endl;
+			     player->get_name(), dungeon[current_room]) << std::endl;
     return combat;
   };
   
@@ -41,13 +41,14 @@ public:
 	current_state = REST;
       }
     } else {
-      current_state = BAD_ENDING
+      current_state = BAD_ENDING;
     };
   };
 
-  game_state get_current_state(){return current_state};
-  Player* get_player(){return player};
-  Enemy* get_current_enemy(){return dungeon[current_room]};
+  game_state get_current_state(){return current_state;};
+  Player* get_player(){return player;};
+  Enemy* get_current_enemy(){return dungeon[current_room];};
+
 };
 
 #endif

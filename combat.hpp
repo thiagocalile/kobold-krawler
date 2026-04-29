@@ -3,7 +3,7 @@
 #ifndef COMBAT_H
 #define COMBAT_H
 
-enum action_type = {
+enum action_type {
 
   ATTACK,
   HEAL,
@@ -28,15 +28,15 @@ public:
     switch(f_action) {
 
     case ATTACK:
-      if(second.defend(first.attack())) should_stop = true;
+      if(second->defend(first->attack())) should_stop = true;
       break;
       
     case HEAL:
-      first.heal();
+      first->heal();
       break;
       
     case USE_ABILITY:
-      if(second.defend(first.ability())) should_stop = true;
+      if(second->defend(first->ability())) should_stop = true;
       break;
     }
 
@@ -46,10 +46,10 @@ public:
   
   bool run_turn(Player* p, action_type p_a, Enemy* e){
 
-    action_type e_a = e.run_action();
+    action_type e_a = e->run_action();
     
     // "Borbulha" se deveria parar ou não
-    if(p.get_speed() > e.get_speed()){
+    if(p->get_speed() > e->get_speed()){
       return run_action(p, p_a, e, e_a);
     } else {
       return run_action(e, e_a, p, p_a);

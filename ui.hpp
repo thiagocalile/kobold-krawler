@@ -28,7 +28,7 @@ private:
   Combat* current_combat;
   
 public:
-  UI() : {
+  UI() {
 
     std::cout << "Bem vinde!" << std::endl;
     
@@ -59,16 +59,20 @@ public:
 
     case GUERREIRO:
       p = new Guerreiro;
+      break;
 
     case ATIRADOR:
       p = new Atirador;
-
+      break;
+      
     case MAGO:
       p = new Mago;
-
+      break;
+      
     case LADINO:
       p = new Ladino;
-
+      break;
+      
     };
 
     std::cout << "Agora, escolha um tamanho para a sua caverna (Recomendado é 5).";
@@ -77,70 +81,160 @@ public:
 
     do{
       std::cin >> dungeon_size;
-    } while(dungeon_size < 1; std::cout << "Tamanho mínimo é 1!" << std::endl;);
+      if(dungeon_size < 1) std::cout << "Tamanho mínimo é 1!" << std::endl;
+    } while(dungeon_size < 1);
 
-    for(; dungeon_size >= 0; dungeon_size--){
-      dungeon.back_push((generate_enemy()));
+    for(; dungeon_size > 0; dungeon_size--){
+      dungeon.push_back((generate_enemy()));
     };
 
-    dungeon.back_push(generate_boss());
+    dungeon.push_back(generate_boss());
     
     game = new Game(p, dungeon);
 
     std::cout << "A boca da caverna te aguarda..." << std::endl;
 
-    current_combat = game.start_combat();
+    current_combat = game->start_combat();
     
   };
   
   void show_combat(){
 
     int prompt {};
-    
+
     do {
-       std::cout << "Qual ação você quer tomar?" << std::endl;
-       std::cout << "0) Atacar" << std::endl;
-       std::cout << "1) Usar poção" << std::endl;
-       std::cout << "2) Usar habilidade" << std::endl;
+	do {
+	    std::cout << "Qual ação você quer tomar?" << std::endl;
+	    std::cout << "0) Atacar" << std::endl;
+	    std::cout << "1) Usar poção" << std::endl;
+	    std::cout << "2) Usar habilidade" << std::endl;
 
-       std::cin >> prompt;
+	    std::cin >> prompt;
 
-    } while(prompt > 2 || prompt < 0;
-	    std::cout << "Escolha uma das opções!" << std::endl;);
+	    if(prompt > 2 || prompt < 0) {
+	          std::cout << "Escolha uma das opções!" << std::endl;
+	    }
+	
+	} while(prompt > 2 || prompt < 0);
 
-    current_combat.run_turn(player, static_cast<action_type>(cout),
-			    game.get_current_enemy(),
-			    game.get_current_enemy().choose_action());
+    } while(//Meio confuso, mas veja combat.hpp, Combat->run_turn();
+	     current_combat->run_turn(
+	       player,
+	       static_cast<action_type>(prompt),
+	       game->get_current_enemy(),
+	       game->get_current_enemy()->choose_action()
+	     )
+	  )
+      
+    game->end_combat();
     
   };
   
   void show_rest(){
+
+    int option {};
+    int heal_amount {};
+
+    std::cout <<
+      std::format("{} triunfou em combate!", player->get_name())
+	      << std::endl;
+    std::cout <<
+      (player->get_current_hp() > 1) ?
+      std::format("Lhe sobraram {} pontos de vida.", player->get_current_hp()) :
+      std::format("Lhe sobrou apenas um mísero ponto de vida.")
+	      << std::endl;
+    do{
+      
+      std::cout << "Agora, resta-lhe uma pergunta: " << std::endl;
+      std::cout << "1) Descansar, mas os monstros ficam mais fortes."
+	        << std::endl;
+      std::cout <<
+        std::format("2) Prosseguir para a próxima \
+                     sala como {} está agora.", player->get_name())
+	        << std::endl;
+
+      std::cin >> option;
+      
+      if(option == 1){
+	if(!player->heal()){
+	  std::cout << "Nenhum monstro ficou mais forte." << std::endl;
+	} else {
+	  harden_monsters(dungeon);
+	  std::cout << "Os monstros também ficaram mais fortes" << std::endl;
+	};
+	
+      };
+
+      if(option != 1 && option != 2){
+	std::cout << "Escolha uma das opções!" << std::endl;
+      };
+      
+    } while(option != 2);
+    
   };
   
   void show_ending(game_state state){
+    if(state == GOOD_ENDING){
+      std::cout <<
+	std::format(
+		    "Parabéns, {} sobrevieu a todas as criaturas, \
+                     além do monstro horrível final", player->get_name())
+		         << std::endl;
+      std::cout <<
+	std::format("Agora, {} volta para casa, para seu dragão.", player->get_name())
+		<< std::endl;
+      std::cout << "Suas mãos com os espólios da vitória!" << std::endl;
+
+      std::cout <<
+	"Mas sua paz é momentânea. Tal é a vida sob um tirano..."
+		<< std::endl;
+    } else {
+
+      std::cout <<
+	std::format("Infelizmente, {} pereceu...", player->get_name())
+		<< std::endl;
+
+      std::cout <<
+	std::format("Ninguém lembrará de {} além de você...", player->get_name())
+		<< std::endl;
+
+      std::cout <<
+	std::format(
+		    "Muitos outros kobolds virão depois \
+                    de {} e também serão esquecidos...", player->get_name())
+		<<std::endl;
+      
+      std::cout << "Mas tal é a vida sob um tirano..." << std::endl;
+      
+    };
   };
 
   bool run() {
 
     for(;;){
 
-      switch(game.get_current_state()){
+      switch(game->get_current_state()){
 
       case START:
 	show_start();
+	break;
 
       case COMBAT:
 	show_combat();
+	break;
 
       case REST:
 	show_rest();
-
+	break;
+	
       case BAD_ENDING:
       case GOOD_ENDING:
-	show_ending(game.get_current_state());
+	show_ending(game->get_current_state());
+	is_running = false;
+	break;
       }
       
-      (is_running) ? continue : break;
+      if(is_running){ continue; } else{ break; }
       
     };
 
