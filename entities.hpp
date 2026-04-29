@@ -171,4 +171,111 @@ public:
 
 };
 
+class Vermin : public Enemy {
+
+private:
+  std::string ability_name;
+  
+public:
+  Vermin(std::string n, std::string a) :
+    Enemy(n, {
+      .hitpoints = 10,
+      .strength = 6,
+      .defense = 2,
+      .speed = 2,
+    }) : ability_name(a) {
+
+    uniform_int_distribution<> distribution(-2, 2);
+    sheet.hitpoints += distribution(gen);
+    sheet.strength += distribution(gen);
+    sheet.defense += distribution(gen);
+    sheet.speed += distribution(gen);
+  };
+
+  int ability(){
+
+    std::cout << std::format("{} {}", name, ability_name) << std::endl;
+
+    uniform_int_distribution<> distribution(2, 4);
+    
+    return distribution(gen);
+    
+  };
+
+};
+
+class Regular : public Enemy {
+
+private:
+  std::string ability_name;
+  
+public:
+  Regular(std::string n, std::string a) :
+    Enemy(n, {
+      .hitpoints = 12,
+      .strength = 8,
+      .defense = 4,
+      .speed = 10,
+    }) : ability_name(a) {
+
+    uniform_int_distribution<> distribution(-1, 2);
+    sheet.hitpoints += distribution(gen);
+    sheet.strength += distribution(gen);
+    sheet.defense += distribution(gen);
+    sheet.speed += distribution(gen);
+  };
+
+  int ability(){
+
+    std::cout << std::format("{} {}", name, ability_name) << std::endl;
+
+    uniform_int_distribution<> distribution(2, 5);
+    
+    return distribution(gen);
+    
+  };
+
+};
+
+class Boss : public Enemy {
+
+private:
+  std::string ability_name;
+  
+public:
+  Vermin(std::string n, std::string a) :
+    Enemy(n, {
+      .hitpoints = 20,
+      .strength = 10,
+      .defense = 6,
+      .speed = 12,
+    }) : ability_name(a) {
+
+    uniform_int_distribution<> distribution(-2, 7);
+    sheet.hitpoints += distribution(gen);
+    sheet.strength += distribution(gen);
+    sheet.defense += distribution(gen);
+    sheet.speed += distribution(gen);
+  };
+
+  int ability(){
+
+    std::cout << std::format("{} {}", name, ability_name) << std::endl;
+
+    uniform_int_distribution<> distribution(5, 12);
+    
+    return distribution(gen);
+    
+  };
+
+};
+
+class Guerreiro : public Player {};
+
+class Atirador : public Player {};
+
+class Mago : public Player {};
+
+class Ladino : public Player {};
+
 #endif
