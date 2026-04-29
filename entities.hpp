@@ -26,19 +26,19 @@ struct entity_sheet {
 
 class Entity {
 
-private:
+protected:
   struct entity_sheet sheet;
   std::string name;
   int current_hp {};
-
+  // https://en.cppreference.com/cpp/numeric/random/uniform_int_distribution
+  std::random_device random_device;
+  std::mt19937 gen(random_device());
+    
 public:
   Entity(std::string n, struct entity_sheet init_sheet) :
     name(n), sheet(init_sheet) {
     current_hp = sheet.hitpoints;
-    // https://en.cppreference.com/cpp/numeric/random/uniform_int_distribution
-    std::random_device random_device;
-    std::mt19937 gen(random_device());
-      };
+    };
 
   // Ataque normal, na base da porrada
   int attack(){
@@ -178,18 +178,20 @@ private:
   
 public:
   Vermin(std::string n, std::string a) :
-    Enemy(n, {
-      .hitpoints = 10,
-      .strength = 6,
-      .defense = 2,
-      .speed = 2,
-    }) : ability_name(a) {
+    Enemy(n, {}), ability_name(a) {
+
+    sheet.hitpoints = 10;
+    sheet.strength = 6;
+    sheet.defense = 2;
+    sheet.speed = 2;
 
     uniform_int_distribution<> distribution(-2, 2);
     sheet.hitpoints += distribution(gen);
     sheet.strength += distribution(gen);
     sheet.defense += distribution(gen);
     sheet.speed += distribution(gen);
+
+    current_hp = sheet.hitpoints;
   };
 
   int ability(){
@@ -211,18 +213,20 @@ private:
   
 public:
   Regular(std::string n, std::string a) :
-    Enemy(n, {
-      .hitpoints = 12,
-      .strength = 8,
-      .defense = 4,
-      .speed = 10,
-    }) : ability_name(a) {
+    Enemy(n, {}), ability_name(a) {
+
+    sheet.hitpoint = 12;
+    sheet.strength = 8;
+    sheet.defense = 4;
+    sheet.speed = 10;
 
     uniform_int_distribution<> distribution(-1, 2);
     sheet.hitpoints += distribution(gen);
     sheet.strength += distribution(gen);
     sheet.defense += distribution(gen);
     sheet.speed += distribution(gen);
+
+    current_hp = sheet.hitpoints;
   };
 
   int ability(){
@@ -243,19 +247,21 @@ private:
   std::string ability_name;
   
 public:
-  Vermin(std::string n, std::string a) :
-    Enemy(n, {
-      .hitpoints = 20,
-      .strength = 10,
-      .defense = 6,
-      .speed = 12,
-    }) : ability_name(a) {
+  Boss(std::string n, std::string a) :
+    Enemy(n, {}), ability_name(a) {
 
+    sheet.hitpoints = 20;
+    sheet.strength = 10;
+    sheet.defense = 6;
+    sheet.speed = 12;
+    
     uniform_int_distribution<> distribution(-2, 7);
     sheet.hitpoints += distribution(gen);
     sheet.strength += distribution(gen);
     sheet.defense += distribution(gen);
     sheet.speed += distribution(gen);
+
+    current_hp = sheet.hitpoints;
   };
 
   int ability(){
