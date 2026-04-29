@@ -11,7 +11,6 @@
 enum action_type {
 
   ATTACK,
-  HEAL,
   USE_ABILITY,
 
 };
@@ -120,7 +119,14 @@ public:
 
     if(distribution(gen)) {return ATTACK;} else {return USE_ABILITY;};
 
-  }
+  };
+
+  void harden(){
+    sheet.hitpoints++;
+    sheet.strength++;
+    sheet.defense++;
+    sheet.speed++;
+  };
   
 };
 
@@ -194,7 +200,7 @@ public:
 
   int ability(){
 
-    std::cout << std::format("{} {}", name, ability_name) << std::endl;
+    std::cout << std::format("{}... {}", name, ability_name) << std::endl;
 
     std::uniform_int_distribution<> distribution(2, 4);
     

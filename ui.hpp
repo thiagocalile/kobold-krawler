@@ -18,6 +18,21 @@ enum classes {
 
 };
 
+struct enemy_ability_pair {
+
+  std::string enemy_name;
+  std::string ability_name;
+
+}
+
+  void harden_monsters(std::vector<Enemy*> dungeon){
+
+  for(Enemy* enemy : dungeon){
+    enemy->harden();
+  }
+  
+}
+
 class UI {
 
 private:
@@ -28,6 +43,81 @@ private:
   std::vector<Enemy*> dungeon;
   Combat* current_combat;
   bool is_initializing = true;
+
+  Enemy* generate_enemy(int enemy_type){
+
+      std::random_device rd;
+      std::mt19937 gen(rd());
+    
+    if(enemy_type == 0){
+
+      std::vector<enemy_ability_pair> vemin_names = {
+	{"Os ratos amaldiçoados", "mordem!"},
+	{"As galinhas atômicas", "bicam sem parar!"},
+	{"O enxame de mosquitos egípicios", "picam incessantemente!"},
+	{"As samambaias psíquicas", "causam enxaqueca!"},
+	{"As carpas mágicas", "pulam sem parar!"},
+	{"Os gerbis geneticamente modificados", "pulam freneticamente!"},
+	{"Os ovos flamejantes", "atiram fogo!"},
+	{"Os livros voadores", "retalham com palavras complicadas!"},
+	{"Os monstros indescritíveis", "fazem coisas impronunciáveis!"},
+	{"As sombras nas paredes", "contam os piores segredos!"},
+	{"As rodas de carroça infernais", "usam ondas mentais!"},
+	{"Os cristais brilhantes", "disparam lasers!"},
+	{"Os laticiínios em promoção", "causam indigestão!"},
+	{"As víboras venenosas", "cospem veneno!"},
+	{"Os tomates assassinos", "tentam koboldicídio!"},
+      };
+
+      std::uniform_int_distribution<> distrib(0, vemin_names.size() - 1);
+      
+      return new Vermin(name, ability);
+      
+    } else if (enemy_type == 1){
+
+      std::vector<enemy_ability_pair> regular_names = {
+	{"O gorila graúdo", "joga pedras!"},
+	{"A gosma ácida", "atira meleca!"},
+	{"O parasita interdimensional", "grita frequências impossíveis!"},
+	{"O espelho mágico", "mostra cenas horripilantes!"},
+	{"A aranha do tamanho de um cachorro", "atira teia!"},
+	{"As águas-vivas flutuantes", "dão choques elétricos!"},
+	{"A espada mágica flutuante", "corta o ar!"},
+	{"O cogumelo de chapéu vermelho", "solta esporos irritantes!"},
+	{"A caveira risonha", "cospe uma substância vil!"},
+	{"A criatura de fumaça", "lufa ar calcinante!"},
+	{"A mão do Lich", "conjura magias proibidas!"},
+	{"O avestruz encouraçado", "atira com seu arco e flecha!"},
+	{"O estrunfo sombrio", "clumba o trembo!"},
+	{"O espectro inquieto", "move a mobília!"},
+	{"A boneca maldita", "atira bolas de naftalina!"},
+      };
+
+      std::uniform_int_distribution<> distrib(0, regular_names.size() - 1);
+      
+      return new Regular(name, ability);
+      
+    } else {
+
+      std::vector<enemy_ability_pair> boss_names = {
+	{"O licantropo", "uiva!"},
+	{"O vampiro", "usa seu olhar petrificante!"},
+	{"A múmia do faraó", "manda 'devolver a pedra'!"},
+	{"O lhurgoyf", "ataca com múltiplos membros!"},
+	{"O dragão de plutônio", "cospe radiação!"},
+      };
+
+      std::uniform_int_distribution<> distrib(0, vemin_names.size() - 1);
+      
+      return new Boss(name, ability);
+
+    }
+    
+  };
+
+  Enemy* generate_boss(){
+    return generate_enemy(2);
+  };
   
 public:
   UI() {
@@ -99,8 +189,13 @@ public:
       if(dungeon_size < 1) std::cout << "Tamanho mínimo é 1!" << std::endl;
     } while(dungeon_size < 1);
 
-    for(; dungeon_size > 0; dungeon_size--){
-      dungeon.push_back((generate_enemy()));
+    int original_dungeon_size = dungeon_size;
+    
+    for(int monster_type {}; dungeon_size > 0; dungeon_size--){
+
+      if(dungeon_size < (original_dungeon_size / 5) * 3) monster_type = 1;
+      
+      dungeon.push_back((generate_enemy(monster_type)));
     };
 
     dungeon.push_back(generate_boss());
@@ -123,12 +218,11 @@ public:
 	do {
 	    std::cout << "Qual ação você quer tomar?" << std::endl;
 	    std::cout << "0) Atacar" << std::endl;
-	    std::cout << "1) Usar poção" << std::endl;
-	    std::cout << "2) Usar habilidade" << std::endl;
+	    std::cout << "1) Usar habilidade" << std::endl;
 
 	    std::cin >> prompt;
 
-	    if(prompt > 2 || prompt < 0) {
+	    if(prompt > 2 || prompt < 1) {
 	          std::cout << "Escolha uma das opções!" << std::endl;
 	    }
 	
