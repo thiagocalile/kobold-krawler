@@ -184,8 +184,10 @@ public:
       
     };
 
-    std::cout << "Agora, escolha um tamanho para a sua caverna (Recomendado é 5).";
-
+    std::cout <<
+      "Agora, escolha um tamanho para a sua caverna (Recomendado é 5)."
+	      << std::endl;
+    
     std::cout << "Digite o tamanho em salas: ";
 
     do{ 
@@ -220,6 +222,12 @@ public:
 
     do {
 	do {
+	  std::cout <<
+	    std::format("{} - HP: {}/{}",
+			p->get_name(),
+			p->get_current_hp(),
+			p->get_max_hp()
+			) << std::endl;
 	    std::cout << "Qual ação você quer tomar?" << std::endl;
 	    std::cout << "0) Atacar" << std::endl;
 	    std::cout << "1) Usar habilidade" << std::endl;
@@ -265,8 +273,9 @@ public:
       std::cout << "1) Descansar, mas os monstros ficam mais fortes."
 	        << std::endl;
       std::cout <<
-        std::format("2) Prosseguir para a próxima \
-                     sala como {} está agora.", p->get_name())
+        std::format("2) Prosseguir para a próxima sala como {} está agora.",
+		    p->get_name()
+		    )
 	        << std::endl;
 
       std::cin >> option;
@@ -296,8 +305,8 @@ public:
     if(state == GOOD_ENDING){
       std::cout <<
 	std::format(
-		    "Parabéns, {} sobrevieu a todas as criaturas, \
-                     além do monstro horrível final", p->get_name())
+	  "Parabéns, {} sobrevieu a todas as criaturas, além do monstro horrível final",
+	  p->get_name())
 		         << std::endl;
       std::cout <<
 	std::format("Agora, {} volta para casa, para seu dragão.", p->get_name())
@@ -319,8 +328,8 @@ public:
 
       std::cout <<
 	std::format(
-		    "Muitos outros kobolds virão depois \
-                    de {} e também serão esquecidos...", p->get_name())
+	    "Muitos outros kobolds virão depois de {} e também serão esquecidos...",
+	    p->get_name())
 		<<std::endl;
       
       std::cout << "Mas tal é a vida sob um tirano..." << std::endl;

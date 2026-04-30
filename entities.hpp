@@ -62,8 +62,8 @@ public:
   Entity* defend(int damage){
 
     int defended_damage = damage - sheet.defense;
-
-    if(defended_damage){
+    
+    if(defended_damage > 0){
     std::cout <<
       std::format("{} defendeu {} do dano infligido!", name, sheet.defense)
 	      << std::endl;
@@ -73,12 +73,19 @@ public:
 		<< std::endl;
     };
     
-    current_hp = (defended_damage > current_hp) ? 0 : current_hp -= defended_damage;
+    if(defended_damage < 0) defended_damage = 0;
+
+    current_hp -= defended_damage;
 
     // É um jeito meio estranho, mas ela:
     // * Retorna nullptr se ninguém morreu
     // * Retorna Entity* da entidade que morreu
-    
+
+    // DEBUG
+    std::cout << "DEBUG: " << name << " HP: " << current_hp << std::endl;
+    //DEBUG
+
+
     return (current_hp > 0) ? nullptr : this;
     
   };
@@ -91,6 +98,8 @@ public:
   int get_current_hp() {return current_hp;};
 
   std::string get_name() {return name;};
+
+  int get_max_hp() {return sheet.hitpoints;};
   
   friend std::ostream& operator<<(std::ostream &os, const Entity &e){
 
@@ -152,7 +161,7 @@ public:
       healing_amount = distribution(gen);
 
       if(current_hp + healing_amount > sheet.hitpoints){
-	healing_amount -= sheet.hitpoints;
+	healing_amount = sheet.hitpoints - current_hp;
       };
 
       current_hp += healing_amount;
@@ -220,7 +229,7 @@ public:
 
     sheet.hitpoints = 12;
     sheet.strength = 8;
-    sheet.defense = 4;
+    sheet.defense = 2;
     sheet.speed = 10;
 
     std::uniform_int_distribution<> distribution(-1, 2);
@@ -255,7 +264,7 @@ public:
 
     sheet.hitpoints = 20;
     sheet.strength = 10;
-    sheet.defense = 6;
+    sheet.defense = 2;
     sheet.speed = 12;
     
     std::uniform_int_distribution<> distribution(-2, 7);
@@ -391,8 +400,8 @@ public:
     int magical_damage = (level * 2 + sheet.speed) * distribution(gen) / 2;
     
     std::cout <<
-      std::format("{} entoa vários encantamentos \
-                   e causa {} de dano.", name, magical_damage)
+      std::format("{} entoa vários encantamentos e causa {} de dano.",
+		  name, magical_damage)
 	       << std::endl;
 
     return magical_damage;
@@ -445,8 +454,8 @@ public:
     }
     
     std::cout <<
-      std::format("{} esfaqueou {} vezes, \
-                   totalizando {} de dano.", name, stabs, damage)
+      std::format("{} esfaqueou {} vezes, totalizando {} de dano.",
+		  name, stabs, damage)
 	       << std::endl;
 
     return damage;
