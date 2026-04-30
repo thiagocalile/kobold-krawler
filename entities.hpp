@@ -9,10 +9,8 @@
 // Vamos fazer ao estilo D&D: 10 é médio
 
 enum action_type {
-
   ATTACK,
   USE_ABILITY,
-
 };
 
 struct entity_sheet {
@@ -44,13 +42,13 @@ public:
   int attack(){
 
     int damage {};
-    std::uniform_int_distribution<> distribution(0, strength + 2);
+    std::uniform_int_distribution<> distribution(0, sheet.strength + 2);
 
     if(damage == 0){
       std::cout <<
 	std::format("{} errou o ataque!", name)
 		<< std::endl;
-    } else if(damage > 0 && damage <= strength) {
+    } else if(damage > 0 && damage <= sheet.strength) {
       std::cout <<
 	std::format("{} atacou!", name)
 		<< std::endl;
@@ -134,6 +132,7 @@ class Player : public Entity {
 
   using Entity::Entity;
 
+protected:
   int level {};
 
 public:
@@ -308,7 +307,7 @@ public:
 
     std::uniform_int_distribution<> distribution(level -1, level + 2);
 
-    return strength + distribution(gen);
+    return sheet.strength + distribution(gen);
     
   };
 
@@ -352,7 +351,7 @@ public:
       std::format("{} atirou com sua funda {} vezes.", name, shots)
 	       << std::endl;
 
-    return (strength + speed) * distribution(gen) / 3;
+    return (sheet.strength + sheet.speed) * distribution(gen) / 3;
     
   };
 
@@ -389,7 +388,7 @@ public:
 
     std::uniform_int_distribution<> distribution(level + 1, level + 2);
 
-    int magical_damage = (level * 2 + speed) * distribution(gen) / 2;
+    int magical_damage = (level * 2 + sheet.speed) * distribution(gen) / 2;
     
     std::cout <<
       std::format("{} entoa vários encantamentos \
@@ -433,12 +432,16 @@ public:
 
     std::uniform_int_distribution<> distribution( (level / 2) + 1, level + 2);
 
-    int stabs = (level + (speed / 2) ) * distribution(gen);
+    int stabs = (level + (sheet.speed / 2) ) * distribution(gen);
 
-    std::uniform_int_distribution<> distribution(0, strength / 2);
+    // Declarar aqui um novo nome conserta um bug de compilação
+    // que eu não estou a fim de descobrir o motivo
+    std::uniform_int_distribution<> distrib(0, (sheet.strength / 2));
+
+    int damage {};
     
-    for(int damage {}; stabs > 0; stabs--){
-      damage += distribution(gen);
+    for(; stabs > 0; stabs--){
+      damage += distrib(gen);
     }
     
     std::cout <<

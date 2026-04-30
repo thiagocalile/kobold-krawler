@@ -10,12 +10,10 @@
 #define UI_H
 
 enum classes {
-
   GUERREIRO = 1,
   ATIRADOR,
   MAGO,
   LADINO,
-
 };
 
 struct enemy_ability_pair {
@@ -25,11 +23,11 @@ struct enemy_ability_pair {
 
 };
 
-  void harden_monsters(std::vector<Enemy*> dungeon){
+void harden_monsters(std::vector<Enemy*> dungeon){
 
   for(Enemy* enemy : dungeon){
     enemy->harden();
-  }
+  };
   
 };
 
@@ -158,7 +156,7 @@ public:
     do{
       std::cout << "Dê um nome para a sua criatura: " << std::endl;
 
-      std::cin >> nome;
+      std::getline(std::cin >> std::ws, nome);
 
       if(nome.size() > 20){
 	std::cout << "Limite o nome para até 20 characteres!" << std::endl;
@@ -290,6 +288,7 @@ public:
     } while(option != 2);
 
     game->end_rest();
+    current_combat = game->start_combat();
     
   };
   
@@ -329,7 +328,7 @@ public:
     };
   };
 
-  bool run() {
+  void run() {
 
     show_start();
     
@@ -356,7 +355,7 @@ public:
       
     };
 
-  }
+  };
 };
 
 #endif

@@ -1,20 +1,10 @@
 #include <vector>
 
-#include "entities.hpp"
+// É uma má prática ocultar todas as chamadas dentro desse cara, mas é
+// Só quero acbar o trabalho logo...
+#include "ui.hpp"
 
 int main(){
-
-  struct entity_sheet placeholder = {0, 0, 0};
-
-  Entity* enemy = new Enemy("Nefarious Enemy", placeholder);
-  Entity* pc = new Player("Good Guy", placeholder);
-
-  std::vector<Entity*> entities = {enemy, pc};
-
-  for(Entity* entity : entities){
-
-    std::cout << *entity << std::endl;
-
-  }
-
+  UI* ui = new UI;
+  ui->run();
 }
