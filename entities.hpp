@@ -318,7 +318,9 @@ public:
 
     std::uniform_int_distribution<> distribution(level -1, level + 2);
 
-    return sheet.strength + distribution(gen);
+    int ability_power = distribution(gen);
+   
+    return sheet.strength + ((ability_power < 0) ? 0 : ability_power);
     
   };
 
