@@ -42,7 +42,7 @@ public:
   };
   
   void end_combat(){
-    if(player->get_current_hp()){
+    if(player->get_current_hp() > 0){
       if(current_room == dungeon.size() - 1){
 	current_state = GOOD_ENDING;
       } else {
