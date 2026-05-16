@@ -38,9 +38,11 @@ public:
     
     // "Borbulha" se deveria parar ou não
     if(p->get_speed() > e->get_speed()){
-      return run_action(p, p_a, e);
-    } else {
+      if(run_action(p, p_a, e)) return true;
       return run_action(e, e_a, p);
+    } else {
+      if(run_action(e, e_a, p)) return true;
+      return run_action(p, p_a, e);
     };
 
   };
