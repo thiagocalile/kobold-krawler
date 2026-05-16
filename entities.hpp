@@ -448,10 +448,7 @@ public:
     int stabs = (level + (sheet.speed / 2) ) * distribution(gen);
 
     // Conserta problema das facadas ficarem sempre como 0
-    std::cout <<
-          std::format("{} esfaqueou {} vezes, totalizando {} de dano.",
-	          name, stabs, damage)
-	           << std::endl;
+    std::cout << std::format("{} esfaqueou {} vezes", name, stabs);
     
     // Declarar aqui um novo nome conserta um bug de compilação
     // que eu não estou a fim de descobrir o motivo
@@ -462,7 +459,8 @@ public:
     for(; stabs > 0; stabs--){
       damage += distrib(gen);
     }
-    
+
+    std::cout << std::format(", totalizando {} de dano.", damage) << std::endl;
     
     return damage;
     
