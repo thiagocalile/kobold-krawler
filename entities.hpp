@@ -44,6 +44,8 @@ public:
     int damage {};
     std::uniform_int_distribution<> distribution(0, sheet.strength + 2);
 
+    damage = distribution(gen);
+    
     if(damage == 0){
       std::cout <<
 	std::format("{} errou o ataque!", name)
