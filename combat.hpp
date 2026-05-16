@@ -13,7 +13,7 @@ public:
   Combat(Player* p, Enemy* e) : player(p), enemy(e) {};
 
   bool run_action(Entity* first, action_type f_action,
-		  Entity* second, action_type s_action){
+		  Entity* second){
 
     bool should_stop = false;
     
@@ -38,9 +38,9 @@ public:
     
     // "Borbulha" se deveria parar ou não
     if(p->get_speed() > e->get_speed()){
-      return run_action(p, p_a, e, e_a);
+      return run_action(p, p_a, e);
     } else {
-      return run_action(e, e_a, p, p_a);
+      return run_action(e, e_a, p);
     };
 
   };
