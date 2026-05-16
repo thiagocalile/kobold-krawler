@@ -33,6 +33,13 @@ public:
 	      << std::endl;
     return combat;
   };
+
+  ~Game() {
+
+    for(Enemy* e : dungeon) {delete e;};
+    delete player;
+
+  };
   
   void end_combat(){
     if(player->get_current_hp()){
