@@ -61,7 +61,7 @@ public:
     return damage;
   };
   
-  Entity* defend(int damage){
+  bool defend(int damage){
 
     int defended_damage = damage - sheet.defense;
     
@@ -88,7 +88,7 @@ public:
     //DEBUG
 
 
-    return (current_hp > 0) ? nullptr : this;
+    return (current_hp <= 0);
     
   };
 
