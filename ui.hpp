@@ -249,6 +249,7 @@ public:
 	    );
       
     game->end_combat();
+    delete current_combat;
     
   };
   
