@@ -7,4 +7,5 @@
 int main(){
   UI* ui = new UI;
   ui->run();
+  delete ui;
 }
