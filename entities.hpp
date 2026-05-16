@@ -38,6 +38,8 @@ public:
     current_hp = sheet.hitpoints;
     };
 
+  virtual ~Entity() = default;
+
   // Ataque normal, na base da porrada
   int attack(){
 
