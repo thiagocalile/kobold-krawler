@@ -138,10 +138,10 @@ public:
     std::cout << "Pelo menos, você tem a chance de não ser comido, tudo dando certo..." << std::endl;
     std::cout << "Escolha a sua classe:" << std::endl;
 
-    std::cout << "1) Guerreiro" << std::endl;
-    std::cout << "2) Atirador" << std::endl;
-    std::cout << "3) Mago" << std::endl;
-    std::cout << "4) Ladino" << std::endl;
+    std::cout << "1) Guerreiro, sua espada pesada e vitalidade complementam sua baixa velocidade" << std::endl;
+    std::cout << "2) Atirador, consegue atacar várias vezes de longe, melhorando com o tempo" << std::endl;
+    std::cout << "3) Mago, frágil, mas por ser esperto, fica forte rapidamente" << std::endl;
+    std::cout << "4) Ladino, sua velocidade com a faca é invejável" << std::endl;
 
     int classe = 10; // Arbitrário mesmo, que seja
     

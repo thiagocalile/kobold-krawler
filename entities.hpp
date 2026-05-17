@@ -86,7 +86,7 @@ public:
     // * Retorna Entity* da entidade que morreu
 
     // DEBUG
-    std::cout << "DEBUG: " << name << " HP: " << current_hp << std::endl;
+    //std::cout << "DEBUG: " << name << " HP: " << current_hp << std::endl;
     //DEBUG
 
 
